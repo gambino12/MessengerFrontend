@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Echo — Главная</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1E1F26;
+      color: #EEEEEE;
+      height: 100vh;
+      display: flex;
+    }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      width: 280px;
+      background-color: #2B2C34;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      font-size: 24px;
+      color: #00ADB5;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-button {
+      flex: 1;
+      background-color: #393E46;
+      border: none;
+      color: #AAAAAA;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      transition: background-color 0.2s;
+    }
+
+    .tab-button.active {
+      background-color: #00ADB5;
+      color: #1E1F26;
+      font-weight: bold;
+    }
+
+    .chat-list, .friends-list {
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    .chat, .friend {
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background-color: #393E46;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .chat:hover, .friend:hover {
+      background-color: #4c566a;
+    }
+
+    .search-bar {
+      margin-bottom: 16px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #393E46;
+      color: #EEEEEE;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .add-friend-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      background-color: #00ADB5;
+      color: #1E1F26;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .add-friend-btn:hover {
+      background-color: #00c3cd;
+    }
+
+    /* ===== Chat Area ===== */
+    .chat-area {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: #1F2229;
+    }
+
+    .chat-header {
+      padding: 20px;
+      background-color: #2B2C34;
+      border-bottom: 1px solid #393E46;
+      font-size: 18px;
+      color: #00ADB5;
+    }
+
+    .messages {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 12px;
+      max-width: 60%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background-color: #393E46;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background-color: #00ADB5;
+      color: #1E1F26;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 16px;
+      border-top: 1px solid #393E46;
+      background-color: #2B2C34;
+    }
+
+    .input-area input {
+      flex-grow: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      margin-right: 10px;
+      background-color: #393E46;
+      color: #EEEEEE;
+      font-size: 16px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-area button {
+      padding: 12px 20px;
+      background-color: #00ADB5;
+      color: #1E1F26;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .input-area button:hover {
+      background-color: #00c3cd;
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="logo">Echo</div>
+  <div class="tabs">
+    <button class="tab-button active" onclick="switchTab('chats')">Чаты</button>
+    <button class="tab-button" onclick="switchTab('friends')">Друзья</button>
+  </div>
+
+  <!-- === CHATS === -->
+  <div id="chats-tab" class="chat-list">
+    <div class="chat">Анна</div>
+    <div class="chat">Макс</div>
+    <div class="chat">Работа</div>
+  </div>
+
+  <!-- === FRIENDS === -->
+  <div id="friends-tab" class="friends-list" style="display: none;">
+    <div class="search-bar">
+      <input type="text" id="searchInput" oninput="filterFriends()" placeholder="Поиск друзей..." />
+    </div>
+    <div class="friend">dmitriy_dev</div>
+    <div class="friend">kira_fox</div>
+    <div class="friend">ghost_squad</div>
+    <button class="add-friend-btn">+ Добавить друга</button>
+  </div>
+</div>
+
+<div class="chat-area">
+  <div class="chat-header">Анна</div>
+  <div class="messages">
+    <div class="message">Привет! Как дела?</div>
+    <div class="message user">Привет, всё отлично. А у тебя?</div>
+    <div class="message">Тоже хорошо 😊</div>
+  </div>
+  <div class="input-area">
+    <input type="text" placeholder="Введите сообщение..." />
+    <button>Отправить</button>
+  </div>
+</div>
+
+<script>
+  function switchTab(tab) {
+    const chatTab = document.getElementById("chats-tab");
+    const friendsTab = document.getElementById("friends-tab");
+    const buttons = document.querySelectorAll(".tab-button");
+
+    buttons.forEach(btn => btn.classList.remove("active"));
+
+    if (tab === "chats") {
+      chatTab.style.display = "block";
+      friendsTab.style.display = "none";
+      buttons[0].classList.add("active");
+    } else {
+      chatTab.style.display = "none";
+      friendsTab.style.display = "block";
+      buttons[1].classList.add("active");
+    }
+  }
+
+  function filterFriends() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const friends = document.querySelectorAll(".friend");
+
+    friends.forEach(friend => {
+      const name = friend.textContent.toLowerCase();
+      friend.style.display = name.includes(input) ? "block" : "none";
+    });
+  }
+</script>
+</body>
+</html>
